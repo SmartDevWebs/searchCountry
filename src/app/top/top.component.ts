@@ -1,6 +1,6 @@
 import { Component, OnInit, Output,EventEmitter } from '@angular/core';
 import { Subject } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged,map } from 'rxjs/operators';
 
 @Component({
   selector: 'top',
@@ -14,7 +14,9 @@ export class TopComponent implements OnInit {
   constructor() {
     this.keyup
     .pipe(
-      debounceTime(1000)
+      map((event:any)=>event?.target?.value),
+      debounceTime(1000),
+      distinctUntilChanged()
     ).subscribe(()=>{this.functchildEmit()})
    }
 
